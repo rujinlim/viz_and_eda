@@ -18,6 +18,8 @@ library(tidyverse)
 
 ``` r
 library(ggridges)
+
+# knitr::opts_chunk$set(fig.width = 6, fig.asp = 0.6, fig.height = 0.3)
 ```
 
 Get the data for plotting today.
@@ -270,3 +272,174 @@ weather_df |>
     ## Warning: Removed 17 rows containing missing values (`geom_point()`).
 
 ![](viz_part1_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+
+``` r
+weather_df |>  
+  ggplot(aes(x = date, y = tmax)) +
+  geom_hex()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_binhex()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> \##
+Univariate plotting
+
+Histogram
+
+``` r
+ggplot(weather_df, aes(x = tmax)) +
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_bin()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+ggplot(weather_df, aes(x = tmax, fill = name)) + # we observe stacking
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_bin()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
+
+``` r
+# one way to deal with stacking
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_histogram(position = "dodge")
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_bin()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->
+
+``` r
+# Let's use a density plot
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_density()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->
+
+``` r
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3) # to see clearer
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_density()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-5.png)<!-- -->
+
+``` r
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3, adjust = 2) # adjust to change how smooth curves are
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_density()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-10-6.png)<!-- -->
+
+Using boxplots
+
+``` r
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_boxplot()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+Violin plots
+
+``` r
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 17 rows containing non-finite values (`stat_ydensity()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+Ridge plot
+
+``` r
+ggplot(weather_df, aes(x = tmax, y = name)) +
+  geom_density_ridges()
+```
+
+    ## Picking joint bandwidth of 1.54
+
+    ## Warning: Removed 17 rows containing non-finite values
+    ## (`stat_density_ridges()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+Line plot
+
+``` r
+weather_df |> 
+  filter(name == "Molokai_HI") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_line() 
+```
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
+weather_df |> 
+  filter(name == "Molokai_HI") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_line(alpha = 0.5) + 
+  geom_point(size = 0.5)
+```
+
+    ## Warning: Removed 1 rows containing missing values (`geom_point()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+
+## Saving plots
+
+``` r
+ggp_weather <-
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_weather
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+``` r
+ggsave("results/ggp_weather.pdf", ggp_weather)
+```
+
+    ## Saving 7 x 5 in image
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+## Embedding plots
+
+``` r
+ggp_weather
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](viz_part1_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+``` r
+# other options: fig.asp
+```

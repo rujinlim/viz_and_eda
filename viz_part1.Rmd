@@ -6,6 +6,8 @@ output: github_document
 ```{r}
 library(tidyverse)
 library(ggridges)
+
+# knitr::opts_chunk$set(fig.width = 6, fig.asp = 0.6, fig.height = 0.3)
 ```
 
 Get the data for plotting today.
@@ -127,5 +129,98 @@ weather_df |>
   ggplot(aes(x = date, y = tmax, color = name)) +
   geom_point(alpha = 0.7, size = 0.5)
 ```
+
+```{r}
+weather_df |>  
+  ggplot(aes(x = date, y = tmax)) +
+  geom_hex()
+```
+## Univariate plotting
+
+Histogram
+
+```{r}
+ggplot(weather_df, aes(x = tmax)) +
+  geom_histogram()
+
+ggplot(weather_df, aes(x = tmax, fill = name)) + # we observe stacking
+  geom_histogram()
+
+# one way to deal with stacking
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_histogram(position = "dodge")
+
+# Let's use a density plot
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density()
+
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3) # to see clearer
+
+ggplot(weather_df, aes(x = tmax, fill = name)) +
+  geom_density(alpha = 0.3, adjust = 2) # adjust to change how smooth curves are
+```
+
+Using boxplots
+
+```{r}
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_boxplot()
+```
+
+Violin plots
+
+```{r}
+ggplot(weather_df, aes(y = tmax, x = name)) +
+  geom_violin()
+```
+
+Ridge plot
+
+```{r}
+ggplot(weather_df, aes(x = tmax, y = name)) +
+  geom_density_ridges()
+```
+
+Line plot
+
+```{r}
+weather_df |> 
+  filter(name == "Molokai_HI") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_line() 
+
+weather_df |> 
+  filter(name == "Molokai_HI") |> 
+  ggplot(aes(x = date, y = tmax)) +
+  geom_line(alpha = 0.5) + 
+  geom_point(size = 0.5)
+```
+
+## Saving plots
+
+```{r}
+ggp_weather <-
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_weather
+
+ggsave("results/ggp_weather.pdf", ggp_weather)
+```
+
+## Embedding plots
+
+```{r, fig.width = 12, fig.height = 12}
+ggp_weather
+
+# other options: fig.asp
+```
+
+
+
+
+
 
 
