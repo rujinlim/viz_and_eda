@@ -59,3 +59,143 @@ weather_df =
     ## date created (size, mb): 2023-09-28 10:20:12.2714 (0.994)
 
     ## file min/max dates: 1999-09-01 / 2023-09-30
+
+## Same plot from last time
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  )
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+## Scales
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+    trans = "sqrt" # data transformation, can also choose to do this above
+  )
+```
+
+    ## Warning in self$trans$transform(x): NaNs produced
+
+    ## Warning: Transformation introduced infinite values in continuous y-axis
+
+    ## Warning: Removed 142 rows containing missing values (`geom_point()`).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+    limits = c(0,30)
+  )
+```
+
+    ## Warning: Removed 302 rows containing missing values (`geom_point()`).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+Can also changee limits by using the filter function
+
+``` r
+weather_df |> 
+  filter(tmax >= 20, tmax <= 30) |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+  )
+```
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+What about colors…
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) + 
+  scale_color_hue(h = c(150,300)) # ranges from 0 to 360
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) + 
+  viridis::scale_color_viridis(discrete = T) # can also use the viridis color palettes
+```
+
+    ## Warning: Removed 17 rows containing missing values (`geom_point()`).
+
+![](viz_part2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+## Themes

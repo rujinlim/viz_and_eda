@@ -29,3 +29,129 @@ weather_df =
     tmax = tmax / 10) |>
   select(name, id, everything())
 ```
+
+## Same plot from last time
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  )
+```
+
+## Scales
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+    trans = "sqrt" # data transformation, can also choose to do this above
+  )
+```
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+    limits = c(0,30)
+  )
+```
+
+Can also changee limits by using the filter function
+
+```{r}
+weather_df |> 
+  filter(tmax >= 20, tmax <= 30) |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15,0,15),
+    labels = c("-15 C", "0 C", "15 C")
+  ) +
+  scale_y_continuous(
+    position = "right", # moves axis to RHS
+  )
+```
+
+What about colors...
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) + 
+  scale_color_hue(h = c(150,300)) # ranges from 0 to 360
+```
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temprature plot",
+    x = "Min daily temp (Degrees C)",
+    y = "Max daily temp",
+    color = "Location",
+    caption = "Max vs min daily temp in three lcoations; data from rnoaa"
+  ) + 
+  viridis::scale_color_viridis(discrete = T) # can also use the viridis color palettes
+```
+
+## Themes
+
+
+
+
+
+
+
+
+
+
+
+
